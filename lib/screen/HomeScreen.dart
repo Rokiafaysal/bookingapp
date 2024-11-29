@@ -1,5 +1,8 @@
-import 'package:bookingapp/components/Card.dart';
-import 'package:bookingapp/screen/ApartmentDetails.dart';
+import 'package:bookingapp/components/ColoreTheme.dart';
+import 'package:bookingapp/components/ButtomBar.dart';
+import 'package:bookingapp/screen/bookingScreen.dart';
+import 'package:bookingapp/screen/homeContent.dart';
+import 'package:bookingapp/screen/profileContent.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
@@ -10,47 +13,60 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  int _selectedIndex = 0;
+
+  final List<Widget> _pages = [
+
+        HomeContent(),
+
+    const 
+
+    Bookingscreen(),
+  Profilecontent()
+  ];
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+                  print(_selectedIndex);
+
+    });
+
+  }
+
   @override
   Widget build(BuildContext context) {
-    double mywidth = MediaQuery.of(context).size.width;
-    double myheight = MediaQuery.of(context).size.height;
-
     return Scaffold(
       backgroundColor: Colors.white,
-      body: Padding(
-        padding: EdgeInsets.only(
-          top: myheight * (67 / 853),
-          left: mywidth * 0.04,
-          right: mywidth * 0.04,
-        ),
-        child: SingleChildScrollView(  
-          child: Column(
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Text(
-                    'اسم المستخدم',
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                  ),
-                ],
-              ),
-              ListView.builder(
-                shrinkWrap: true,  
-                
-                physics: NeverScrollableScrollPhysics(),  
-                itemCount: 10,  
-                itemBuilder: (context, index) {
-                  return  CardApartment(title: 'اسم الشقة',
-                  onClick: (){
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => Apartmentdetails(),));
-                  },
-                  );
-                },
-              ),
-            ],
-          ),
-        ),
+      body: _pages[_selectedIndex],
+
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          setState(() {
+            _selectedIndex = 1; 
+
+          });
+      //    Navigator.push(context, MaterialPageRoute(builder: (context) =>  Bookingscreen(),));
+
+        },
+        
+        backgroundColor: AppColors.primaryColor,
+        splashColor:AppColors.primaryDark,
+        shape: CircleBorder(),
+        child: const Icon(Icons.add, color: Colors.white),
+      ),
+
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+
+      bottomNavigationBar: CustomBottomBar(
+        selectedIndex: _selectedIndex,
+        onItemTapped: _onItemTapped,
+        onFloatingActionButtonPressed: () {
+          setState(() {
+            _selectedIndex = 1; 
+            print(_selectedIndex);
+          });
+        },
       ),
     );
   }

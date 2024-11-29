@@ -9,7 +9,8 @@ class DefaultButton extends StatelessWidget {
   final double ?width;
   final double ? height;
   final double ?fontsize;
-  const DefaultButton({super.key, required this.colored, required this.onClick, required this.text, this.color, this.width, this.height, this.fontsize});
+  final Color ?colorButton;
+  const DefaultButton({super.key, required this.colored, required this.onClick, required this.text, this.color, this.width, this.height, this.fontsize, this.colorButton});
 
   @override
   Widget build(BuildContext context) {
@@ -24,10 +25,10 @@ class DefaultButton extends StatelessWidget {
                     height: height ?? myheight*(48/853),
                     decoration: BoxDecoration(
 
-                      color: colored ? AppColors.primaryColor : Colors.transparent,
+                      color: colored ? colorButton?? AppColors.primaryColor : Colors.transparent,
                       borderRadius: const BorderRadius.all( Radius.circular(8))
                     ),
-                    child: Center(child: Text(text ,style:  TextStyle(color: color  ?? Colors.white,fontSize: fontsize?? 14),)),
+                    child: Center(child: Text(text ,style:  TextStyle(color: color  ?? Colors.white,fontSize: fontsize?? 14,fontFamily: 'Tajawal'),)),
                   
                   ),
                 );
