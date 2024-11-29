@@ -27,7 +27,7 @@ class _SplashscreenState extends State<Splashscreen> {
 
 
                 Positioned(
-                  bottom: myheight*0.04,
+                  bottom: myheight*0.08,
                   left: mywidth*0.04,
                   right: mywidth*0.04,
                   child: DefaultButton(colored: true, onClick: (){

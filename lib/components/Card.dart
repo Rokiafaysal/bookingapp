@@ -8,21 +8,22 @@ class CardApartment extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
         double myheight = MediaQuery.of(context).size.height;
+        double mywidth = MediaQuery.of(context).size.width;
 
     return Padding(
-                    padding:  EdgeInsets.only(bottom: 12.0),
+                    padding:  EdgeInsets.only(bottom: 12.0,left: mywidth*0.04,right: mywidth*0.04),
                     child: GestureDetector(
                       onTap: onClick,
                       child: Container(
-                        height: myheight * (96 / 853),  // Adjust height based on screen size
+                        height: myheight * (96 / 853),  
                         decoration: BoxDecoration(
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(20),
                           boxShadow: [
                             BoxShadow(
-                              offset: Offset(0, 4),
+                              offset: Offset(0, 2),
                               blurRadius: 45,
-                              color: Color(0xff1B1B4D).withOpacity(0.07),
+                              color: Color.fromARGB(255, 19, 19, 24).withOpacity(0.06),
                             ),
                           ],
                         ),
@@ -35,7 +36,7 @@ class CardApartment extends StatelessWidget {
                                 padding: EdgeInsets.only(right: 12.0),
                                 child: Text(
                       title ,
-                                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600,fontFamily: 'Tajawal'),
                                 ),
                               ),
                               Image.asset('assets/img.png'),
