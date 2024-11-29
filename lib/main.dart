@@ -8,6 +8,8 @@ void main() {
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
+  static String baseurl = 'http://gaber.alfaysalerp.com/';
+  static String token = '';
 
   // This widget is the root of your application.
   @override
@@ -16,14 +18,10 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-   
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
-        
       ),
-      home:Splashscreen(),
+      home: Splashscreen(),
     );
   }
 }
-
-

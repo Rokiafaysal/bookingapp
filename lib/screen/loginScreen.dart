@@ -1,6 +1,7 @@
 import 'package:bookingapp/components/ColoreTheme.dart';
 import 'package:bookingapp/components/defaultTextField.dart';
 import 'package:bookingapp/components/defultButton.dart';
+import 'package:bookingapp/domain/repo_impl/user_repo/users_repo_impl.dart';
 import 'package:bookingapp/screen/HomeScreen.dart';
 import 'package:flutter/material.dart';
 
@@ -54,7 +55,7 @@ class _LoginscreenState extends State<Loginscreen> {
 
             // Bottom Container
             Container(
-              height: myheight , // Adjusted to match the top section height
+              height: myheight, // Adjusted to match the top section height
               decoration: const BoxDecoration(
                 borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(62),
@@ -99,18 +100,25 @@ class _LoginscreenState extends State<Loginscreen> {
                     SizedBox(height: myheight * 0.05),
                     DefaultButton(
                       colored: true,
-                      onClick: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage(),));
-
+                      onClick: () async {
+                        UsersRepoImpl usersRepoImpl = UsersRepoImpl();
+                        int code = await usersRepoImpl.login(
+                            username: emailController.text,
+                            password: passwordController.text);
+                        if (code == 200) {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => HomePage(),
+                              ));
+                        }
                       },
-
                       text: 'تسجيل الدخول',
                     ),
 
                     SizedBox(height: myheight * 0.02),
                     TextButton(
-                      onPressed: () {
-                      },
+                      onPressed: () {},
                       child: Text(
                         "هل نسيت كلمة المرور؟",
                         style: TextStyle(

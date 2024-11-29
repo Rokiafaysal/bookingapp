@@ -4,11 +4,15 @@ import 'package:bookingapp/components/calender/calenderheader.dart';
 import 'package:bookingapp/components/datapicker.dart';
 import 'package:bookingapp/components/defaultTextField.dart';
 import 'package:bookingapp/components/defultButton.dart';
+import 'package:bookingapp/data/models/appartment_model.dart';
+import 'package:bookingapp/data/models/reserve_model.dart';
+import 'package:bookingapp/domain/repo_impl/reserve_repo/reserve_repo_imp.dart';
 import 'package:bookingapp/screen/HomeScreen.dart';
 import 'package:flutter/material.dart';
 
 class Apartmentdetails extends StatefulWidget {
-  const Apartmentdetails({super.key});
+  final AppartementModel appartementModel;
+  const Apartmentdetails({super.key, required this.appartementModel});
 
   @override
   State<Apartmentdetails> createState() => _ApartmentdetailsState();
@@ -54,8 +58,8 @@ class _ApartmentdetailsState extends State<Apartmentdetails> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
-        title: const Text(
-          'اسم الشقة',
+        title: Text(
+          widget.appartementModel.name,
           style: TextStyle(
             fontFamily: 'Tajawal',
             fontWeight: FontWeight.normal,
@@ -175,7 +179,15 @@ class _ApartmentdetailsState extends State<Apartmentdetails> {
                       padding: const EdgeInsets.only(left: 16.0, right: 16.0),
                       child: DefaultButton(
                           colored: true,
-                          onClick: () {
+                          onClick: () async {
+                            ReserveRepoImp reserveRepoImp = ReserveRepoImp();
+                            Reserve _res = Reserve(
+                              appartementId: widget.appartementModel.id,
+                              fromDate: fromController.text,
+                              toDate: ToController.text,
+                            );
+                            await reserveRepoImp.createReseervation(
+                                reserv: _res);
                             showDialog(
                               context: context,
                               builder: (context) {
@@ -184,19 +196,21 @@ class _ApartmentdetailsState extends State<Apartmentdetails> {
                                   contentPadding: const EdgeInsets.all(0),
                                   backgroundColor: AppColors.primaryColor,
                                   actions: [
-                                    
                                     Center(
                                       child: Padding(
                                         padding: const EdgeInsets.all(16.0),
                                         child: Column(
-                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
                                           children: [
                                             SizedBox(
-                                              width: 70,
-                                              height: 60,
-                                              child: Image.asset('assets/done.png')),
+                                                width: 70,
+                                                height: 60,
+                                                child: Image.asset(
+                                                    'assets/done.png')),
                                             const Padding(
-                                              padding:  const EdgeInsets.only(top: 16.0),
+                                              padding: const EdgeInsets.only(
+                                                  top: 16.0),
                                               child: Text(
                                                 '  تم الحجز ',
                                                 style: TextStyle(
@@ -208,10 +222,24 @@ class _ApartmentdetailsState extends State<Apartmentdetails> {
                                               ),
                                             ),
                                             Padding(
-                                              padding:  const EdgeInsets.only(top: 30.0),
-                                              child: DefaultButton(colored: true, onClick: (){
-                                                Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage(),));
-                                              }, text: 'Back to home', colorButton: const Color.fromARGB(255, 240, 240, 240),color: AppColors.primaryColor,),
+                                              padding: const EdgeInsets.only(
+                                                  top: 30.0),
+                                              child: DefaultButton(
+                                                colored: true,
+                                                onClick: () async {
+                                                  Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            HomePage(),
+                                                      ));
+                                                },
+                                                text: 'Back to home',
+                                                colorButton:
+                                                    const Color.fromARGB(
+                                                        255, 240, 240, 240),
+                                                color: AppColors.primaryColor,
+                                              ),
                                             )
                                           ],
                                         ),
