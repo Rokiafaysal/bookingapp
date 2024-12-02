@@ -6,12 +6,13 @@ import 'package:bookingapp/components/defaultTextField.dart';
 import 'package:bookingapp/components/defultButton.dart';
 import 'package:bookingapp/data/models/appartment_model.dart';
 import 'package:bookingapp/data/models/reserve_model.dart';
+import 'package:bookingapp/data/models/single_appartment_model.dart';
 import 'package:bookingapp/domain/repo_impl/reserve_repo/reserve_repo_imp.dart';
 import 'package:bookingapp/screen/HomeScreen.dart';
 import 'package:flutter/material.dart';
 
 class Apartmentdetails extends StatefulWidget {
-  final AppartementModel appartementModel;
+  final SingleAppartmentModel appartementModel;
   const Apartmentdetails({super.key, required this.appartementModel});
 
   @override

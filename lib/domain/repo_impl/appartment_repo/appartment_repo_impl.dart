@@ -1,11 +1,13 @@
 import 'package:bookingapp/data/data_source/remote/remote_data.dart';
+import 'package:bookingapp/data/models/apparntment_send_model.dart';
 import 'package:bookingapp/data/models/appartment_model.dart';
 import 'package:bookingapp/data/models/baisc_response.dart';
+import 'package:bookingapp/data/models/single_appartment_model.dart';
 import 'package:bookingapp/data/repo/appartment_repository.dart';
 
 class AppartmentRepoImpl implements AppartmentRepository {
   @override
-  Future<ResponseModel> createAppartment({required AppartementModel app}) {
+  Future<ResponseModel> createAppartment({required AppartementSendModel app}) {
     return MainFun.postReq(
         ResponseModel.fromJson, "appartements/addappartement", app.toJson());
   }
@@ -17,8 +19,8 @@ class AppartmentRepoImpl implements AppartmentRepository {
   }
 
   @override
-  Future<AppartementModel> getAppartmentbyid({required int id}) {
+  Future<SingleAppartmentModel> getAppartmentbyid({required int id}) {
     return MainFun.getReqMap(
-        AppartementModel.fromJson, "appartements/getappartementbyid/$id");
+        SingleAppartmentModel.fromJson, "appartements/getappartementbyid/$id");
   }
 }

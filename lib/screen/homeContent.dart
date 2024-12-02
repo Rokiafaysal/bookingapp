@@ -2,6 +2,7 @@ import 'package:bookingapp/components/Card.dart';
 import 'package:bookingapp/components/ColoreTheme.dart';
 import 'package:bookingapp/data/data_source/remote/remote_data.dart';
 import 'package:bookingapp/data/models/appartment_model.dart';
+import 'package:bookingapp/data/models/single_appartment_model.dart';
 import 'package:bookingapp/domain/repo_impl/appartment_repo/appartment_repo_impl.dart';
 import 'package:bookingapp/screen/ApartmentDetails.dart';
 import 'package:flutter/material.dart';
@@ -66,8 +67,9 @@ class _HomeContentState extends State<HomeContent> {
                   onClick: () async {
                     AppartmentRepoImpl appartmentRepoImpl =
                         AppartmentRepoImpl();
-                    AppartementModel appartementModel = await appartmentRepoImpl
-                        .getAppartmentbyid(id: appartments[index].id);
+                    SingleAppartmentModel appartementModel =
+                        await appartmentRepoImpl.getAppartmentbyid(
+                            id: appartments[index].id);
 
                     Navigator.push(
                       context,
