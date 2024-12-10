@@ -47,7 +47,7 @@ class Detail {
 
   factory Detail.fromJson(Map<String, dynamic> json) {
     return Detail(
-      reverseId: json['reverseid'] as int,
+      reverseId: json['id'] as int,
       fromDate: json['fromdate'] as String,
       toDate: json['todate'] as String,
       appartementId: json['appartementid'] as int,

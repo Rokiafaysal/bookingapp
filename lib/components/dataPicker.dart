@@ -6,7 +6,12 @@ class DatePickerField extends StatefulWidget {
   final String hintText;
   final TextEditingController dateController;
 
-  DatePickerField({Key? key, required this.dateController, required this.labelText, required this.hintText, }) : super(key: key);
+  DatePickerField({
+    Key? key,
+    required this.dateController,
+    required this.labelText,
+    required this.hintText,
+  }) : super(key: key);
 
   @override
   _DatePickerFieldState createState() => _DatePickerFieldState();
@@ -15,11 +20,11 @@ class DatePickerField extends StatefulWidget {
 class _DatePickerFieldState extends State<DatePickerField> {
   Future<void> _selectDate(BuildContext context) async {
     DateTime? pickedDate = await showDatePicker(
-      context: context,
-      initialDate: DateTime.now(), // Current date
-      firstDate: DateTime(1920), // Earliest possible date
-      lastDate: DateTime.now(), // Set the lastDate to today or a future date
-    );
+        context: context,
+        initialDate: DateTime.now(), // Current date
+        firstDate: DateTime(1920), // Earliest possible date
+        lastDate: DateTime(2100) // Set the lastDate to today or a future date
+        );
 
     if (pickedDate != null) {
       setState(() {
@@ -34,14 +39,12 @@ class _DatePickerFieldState extends State<DatePickerField> {
     return Column(
       children: [
         DefaultTextField(
-        
-          icon:Icons.calendar_month ,
-          
-
-         
+          icon: Icons.calendar_month,
           type: TextInputType.datetime,
           onTap: () => _selectDate(context),
-           label: widget.labelText, hintText:widget. hintText, textController:  widget.dateController,
+          label: widget.labelText,
+          hintText: widget.hintText,
+          textController: widget.dateController,
         ),
       ],
     );

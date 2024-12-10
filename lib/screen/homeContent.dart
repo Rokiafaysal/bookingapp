@@ -4,6 +4,7 @@ import 'package:bookingapp/data/data_source/remote/remote_data.dart';
 import 'package:bookingapp/data/models/appartment_model.dart';
 import 'package:bookingapp/data/models/single_appartment_model.dart';
 import 'package:bookingapp/domain/repo_impl/appartment_repo/appartment_repo_impl.dart';
+import 'package:bookingapp/main.dart';
 import 'package:bookingapp/screen/ApartmentDetails.dart';
 import 'package:flutter/material.dart';
 
@@ -40,13 +41,13 @@ class _HomeContentState extends State<HomeContent> {
       child: SingleChildScrollView(
         child: Column(
           children: [
-            const Row(
+            Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Padding(
                   padding: EdgeInsets.only(bottom: 20.0),
                   child: Text(
-                    'اسم المستخدم',
+                    MyApp.userName,
                     style: const TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.w600,
@@ -75,6 +76,7 @@ class _HomeContentState extends State<HomeContent> {
                       context,
                       MaterialPageRoute(
                         builder: (context) => Apartmentdetails(
+                          userType: "1",
                           appartementModel: appartementModel,
                         ),
                       ),

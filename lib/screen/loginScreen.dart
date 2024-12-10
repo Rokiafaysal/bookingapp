@@ -68,15 +68,7 @@ class _LoginscreenState extends State<Loginscreen> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     SizedBox(height: myheight * 0.1),
-                    // Text(
-                    //   "يرجى تسجيل الدخول للمتابعة",
-                    //   style: TextStyle(
-                    //     fontSize: mywidth * 0.04,
-                    //     color: AppColors.gray7.withOpacity(0.7),
-                    //   ),
-                    // ),
 
-                    // Email Field
                     SizedBox(height: myheight * 0.02),
                     DefaultTextField(
                       hintText: 'بريدك الالكتروني ',

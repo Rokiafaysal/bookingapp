@@ -10,12 +10,13 @@ class MyApp extends StatelessWidget {
   const MyApp({super.key});
   static String baseurl = 'http://gaber.alfaysalerp.com/';
   static String token = '';
-
+  static String userName = '';
+  static int userType = 0;
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Booking App',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),

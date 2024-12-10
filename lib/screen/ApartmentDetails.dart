@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:bookingapp/components/ColoreTheme.dart';
 import 'package:bookingapp/components/calender/calenderGrid.dart';
 import 'package:bookingapp/components/calender/calenderheader.dart';
@@ -8,40 +10,73 @@ import 'package:bookingapp/data/models/appartment_model.dart';
 import 'package:bookingapp/data/models/reserve_model.dart';
 import 'package:bookingapp/data/models/single_appartment_model.dart';
 import 'package:bookingapp/domain/repo_impl/reserve_repo/reserve_repo_imp.dart';
+import 'package:bookingapp/main.dart';
 import 'package:bookingapp/screen/HomeScreen.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class Apartmentdetails extends StatefulWidget {
   final SingleAppartmentModel appartementModel;
-  const Apartmentdetails({super.key, required this.appartementModel});
+  final String userType;
+  const Apartmentdetails(
+      {super.key, required this.appartementModel, required this.userType});
 
   @override
   State<Apartmentdetails> createState() => _ApartmentdetailsState();
 }
 
 class _ApartmentdetailsState extends State<Apartmentdetails> {
+  List<int> highlightedDates = [];
   var fromController = TextEditingController();
   var ToController = TextEditingController();
-  int year = 2024;
-  int month = 9;
+  int year = DateTime.now().year;
+  int month = DateTime.now().month;
+  List<int> getDifferenceDays(DateTime startDate, DateTime endDate) {
+    // Ensure the startDate is before or the same as endDate
+    if (startDate.isAfter(endDate)) {
+      throw ArgumentError("startDate must be before or equal to endDate");
+    }
 
-  final List<int> highlightedDates = [
-    2,
-    3,
-    4,
-    5,
-    10,
-    11,
-    12,
-    13,
-    14,
-    15,
-    24,
-    25,
-    27,
-    28,
-    29
-  ];
+    List<int> daysDifference = [];
+    DateTime currentDate = startDate;
+
+    while (currentDate.isBefore(endDate) ||
+        currentDate.isAtSameMomentAs(endDate)) {
+      daysDifference
+          .add(currentDate.day); // Add the day number of the currentDate
+      currentDate = currentDate.add(Duration(days: 1)); // Move to the next day
+    }
+
+    return daysDifference;
+  }
+
+  Future<void> gethighlighteddays() async {
+    for (var i = 0; i < widget.appartementModel.dtl.length; i++) {
+      setState(() {
+        highlightedDates += (getDifferenceDays(
+            DateTime.parse((widget.appartementModel.dtl[i].fromDate)),
+            DateTime.parse((widget.appartementModel.dtl[i].toDate))));
+      });
+    }
+  }
+
+  String convertDateFormat(String date) {
+    // Parse the string date into a DateTime object
+    DateTime parsedDate = DateTime.parse(date);
+
+    // Format the DateTime object into DD-MM-YYYY
+    String formattedDate = DateFormat('yyyy-MM-dd').format(parsedDate);
+
+    return formattedDate;
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    highlightedDates = [];
+    gethighlighteddays();
+  }
 
   void _updateMonth(int newYear, int newMonth) {
     setState(() {
@@ -117,145 +152,202 @@ class _ApartmentdetailsState extends State<Apartmentdetails> {
                   onMonthChange: _updateMonth,
                 ),
               ),
-              const Padding(
+              Padding(
                 padding: EdgeInsets.only(bottom: 16.0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    Text(
-                      ' حجز الشقة ',
-                      style: TextStyle(
-                        fontFamily: 'Tajawal',
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16,
-                        color: AppColors.gray7,
-                      ),
-                    ),
+                    MyApp.userType == 1
+                        ? const Text(
+                            ' حجز الشقة ',
+                            style: TextStyle(
+                              fontFamily: 'Tajawal',
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16,
+                              color: AppColors.gray7,
+                            ),
+                          )
+                        : const SizedBox(),
                   ],
                 ),
               ),
-              Container(
-                width: mywidth * (361 / 393),
-                height:
-                    myheight * (220 / 853), // Ensure a fixed or flexible height
-                decoration: BoxDecoration(
-                  border: Border.all(color: AppColors.gray1),
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Flexible(
-                          // Ensure the TextField gets enough space
-                          child: Padding(
-                            padding: const EdgeInsets.only(
-                                top: 0, left: 16, right: 10),
-                            child: DatePickerField(
-                              hintText: '2024/11/12',
-                              labelText: 'الي',
-                              dateController: fromController,
-                            ),
+              MyApp.userType == 1
+                  ? Container(
+                      width: mywidth * (361 / 393),
+                      height: myheight *
+                          (220 / 853), // Ensure a fixed or flexible height
+                      decoration: BoxDecoration(
+                        border: Border.all(color: AppColors.gray1),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              Flexible(
+                                // Ensure the TextField gets enough space
+                                child: Padding(
+                                  padding: const EdgeInsets.only(
+                                      top: 0, left: 16, right: 10),
+                                  child: DatePickerField(
+                                    hintText: 'الي',
+                                    labelText: 'الي',
+                                    dateController: ToController,
+                                  ),
+                                ),
+                              ),
+                              Flexible(
+                                // Ensure the TextField gets enough space
+                                child: Padding(
+                                  padding: const EdgeInsets.only(
+                                    top: 0.0,
+                                    right: 16,
+                                  ),
+                                  child: DatePickerField(
+                                    labelText: 'من',
+                                    hintText: 'من',
+                                    dateController: fromController,
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
-                        ),
-                        Flexible(
-                          // Ensure the TextField gets enough space
-                          child: Padding(
-                            padding: const EdgeInsets.only(
-                              top: 0.0,
-                              right: 16,
-                            ),
-                            child: DatePickerField(
-                              labelText: 'من',
-                              hintText: '2024/11/12',
-                              dateController: ToController,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 16.0, right: 16.0),
-                      child: DefaultButton(
-                          colored: true,
-                          onClick: () async {
-                            ReserveRepoImp reserveRepoImp = ReserveRepoImp();
-                            Reserve _res = Reserve(
-                              appartementId: widget.appartementModel.id,
-                              fromDate: fromController.text,
-                              toDate: ToController.text,
-                            );
-                            await reserveRepoImp.createReseervation(
-                                reserv: _res);
-                            showDialog(
-                              context: context,
-                              builder: (context) {
-                                return AlertDialog(
-                                  insetPadding: const EdgeInsets.all(16),
-                                  contentPadding: const EdgeInsets.all(0),
-                                  backgroundColor: AppColors.primaryColor,
-                                  actions: [
-                                    Center(
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(16.0),
-                                        child: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            SizedBox(
-                                                width: 70,
-                                                height: 60,
-                                                child: Image.asset(
-                                                    'assets/done.png')),
-                                            const Padding(
-                                              padding: const EdgeInsets.only(
-                                                  top: 16.0),
-                                              child: Text(
-                                                '  تم الحجز ',
-                                                style: TextStyle(
-                                                  fontFamily: 'Tajawal',
-                                                  fontWeight: FontWeight.bold,
-                                                  fontSize: 20,
-                                                  color: Colors.white,
+                          Padding(
+                            padding:
+                                const EdgeInsets.only(left: 16.0, right: 16.0),
+                            child: DefaultButton(
+                                colored: true,
+                                onClick: () async {
+                                  if (fromController.text != "" &&
+                                      ToController.text != "") {
+                                    ReserveRepoImp reserveRepoImp =
+                                        ReserveRepoImp();
+                                    Reserve _res = Reserve(
+                                      appartementId: widget.appartementModel.id,
+                                      fromDate: fromController.text,
+                                      toDate: ToController.text,
+                                    );
+                                    var res = await reserveRepoImp
+                                        .createReseervation(reserv: _res);
+                                    if (res.message == 1) {
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        SnackBar(
+                                          content: Text(res.extramessage),
+                                          duration: Duration(seconds: 3),
+                                          action: SnackBarAction(
+                                            label: '',
+                                            onPressed: () {
+                                              // Code to undo the change
+                                              print('Undo action performed!');
+                                            },
+                                          ),
+                                        ),
+                                      );
+                                    } else {
+                                      showDialog(
+                                        context: context,
+                                        builder: (context) {
+                                          return AlertDialog(
+                                            insetPadding:
+                                                const EdgeInsets.all(16),
+                                            contentPadding:
+                                                const EdgeInsets.all(0),
+                                            backgroundColor:
+                                                AppColors.primaryColor,
+                                            actions: [
+                                              Center(
+                                                child: Padding(
+                                                  padding: const EdgeInsets.all(
+                                                      16.0),
+                                                  child: Column(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
+                                                    children: [
+                                                      SizedBox(
+                                                          width: 70,
+                                                          height: 60,
+                                                          child: Image.asset(
+                                                              'assets/done.png')),
+                                                      const Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .only(
+                                                                top: 16.0),
+                                                        child: Text(
+                                                          '  تم الحجز ',
+                                                          style: TextStyle(
+                                                            fontFamily:
+                                                                'Tajawal',
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                            fontSize: 20,
+                                                            color: Colors.white,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                      Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .only(
+                                                                top: 30.0),
+                                                        child: DefaultButton(
+                                                          colored: true,
+                                                          onClick: () async {
+                                                            Navigator.push(
+                                                                context,
+                                                                MaterialPageRoute(
+                                                                  builder:
+                                                                      (context) =>
+                                                                          HomePage(),
+                                                                ));
+                                                          },
+                                                          text: 'Back to home',
+                                                          colorButton:
+                                                              const Color
+                                                                  .fromARGB(
+                                                                  255,
+                                                                  240,
+                                                                  240,
+                                                                  240),
+                                                          color: AppColors
+                                                              .primaryColor,
+                                                        ),
+                                                      )
+                                                    ],
+                                                  ),
                                                 ),
                                               ),
-                                            ),
-                                            Padding(
-                                              padding: const EdgeInsets.only(
-                                                  top: 30.0),
-                                              child: DefaultButton(
-                                                colored: true,
-                                                onClick: () async {
-                                                  Navigator.push(
-                                                      context,
-                                                      MaterialPageRoute(
-                                                        builder: (context) =>
-                                                            HomePage(),
-                                                      ));
-                                                },
-                                                text: 'Back to home',
-                                                colorButton:
-                                                    const Color.fromARGB(
-                                                        255, 240, 240, 240),
-                                                color: AppColors.primaryColor,
-                                              ),
-                                            )
-                                          ],
+                                            ],
+                                          );
+                                        },
+                                      );
+                                    }
+                                  } else {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: Text("برجاء اختيار تاريخ"),
+                                        duration: Duration(seconds: 3),
+                                        action: SnackBarAction(
+                                          label: '',
+                                          onPressed: () {
+                                            // Code to undo the change
+                                            print('Undo action performed!');
+                                          },
                                         ),
                                       ),
-                                    ),
-                                  ],
-                                );
-                              },
-                            );
-                          },
-                          text: 'احجز الان'),
+                                    );
+                                  }
+                                },
+                                text: 'احجز الان'),
+                          )
+                        ],
+                      ),
                     )
-                  ],
-                ),
-              ),
+                  : SizedBox(),
             ],
           ),
         ),

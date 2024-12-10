@@ -33,6 +33,8 @@ class UsersRepoImpl implements UserRepository {
       // Decode the response body to a Map
       var responseBody = jsonDecode(responseString);
       MyApp.token = responseBody['jwtToken'];
+      MyApp.userType = responseBody['userType'];
+      MyApp.userName = responseBody['username'];
       return response.statusCode;
     } else {
       print(response.reasonPhrase);
