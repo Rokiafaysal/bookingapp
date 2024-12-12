@@ -12,6 +12,7 @@ import 'package:bookingapp/data/models/single_appartment_model.dart';
 import 'package:bookingapp/domain/repo_impl/reserve_repo/reserve_repo_imp.dart';
 import 'package:bookingapp/main.dart';
 import 'package:bookingapp/screen/HomeScreen.dart';
+import 'package:bookingapp/screen/adminDetailsScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -29,6 +30,7 @@ class _ApartmentdetailsState extends State<Apartmentdetails> {
   List<int> highlightedDates = [];
   var fromController = TextEditingController();
   var ToController = TextEditingController();
+  var descriptionController=TextEditingController();
   int year = DateTime.now().year;
   int month = DateTime.now().month;
   List<int> getDifferenceDays(DateTime startDate, DateTime endDate) {
@@ -144,7 +146,7 @@ class _ApartmentdetailsState extends State<Apartmentdetails> {
                 },
               ),
               SizedBox(
-                height: 270,
+                height: 230,
                 child: CalendarGrid(
                   year: year,
                   month: month,
@@ -152,8 +154,18 @@ class _ApartmentdetailsState extends State<Apartmentdetails> {
                   onMonthChange: _updateMonth,
                 ),
               ),
+              MyApp.userType ==1 ? Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  DefaultButton(
+
+                    colored: true, onClick: (){
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => Admindetailsscreen(),));
+                    }, text: 'تفاصيل ',width: 106,height: 38,),
+                ],
+              ) : SizedBox(),
               Padding(
-                padding: EdgeInsets.only(bottom: 16.0),
+                padding: EdgeInsets.only(bottom: 16.0,top: 16),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
@@ -174,15 +186,18 @@ class _ApartmentdetailsState extends State<Apartmentdetails> {
               MyApp.userType == 1
                   ? Container(
                       width: mywidth * (361 / 393),
-                      height: myheight *
-                          (220 / 853), // Ensure a fixed or flexible height
+                   
                       decoration: BoxDecoration(
                         border: Border.all(color: AppColors.gray1),
                         borderRadius: BorderRadius.circular(12),
                       ),
                       child: Column(
+                        mainAxisSize: MainAxisSize.min,
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
+
+
+                          
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
@@ -190,7 +205,7 @@ class _ApartmentdetailsState extends State<Apartmentdetails> {
                                 // Ensure the TextField gets enough space
                                 child: Padding(
                                   padding: const EdgeInsets.only(
-                                      top: 0, left: 16, right: 10),
+                                      top: 12, left: 16, right: 10),
                                   child: DatePickerField(
                                     hintText: 'الي',
                                     labelText: 'الي',
@@ -202,7 +217,7 @@ class _ApartmentdetailsState extends State<Apartmentdetails> {
                                 // Ensure the TextField gets enough space
                                 child: Padding(
                                   padding: const EdgeInsets.only(
-                                    top: 0.0,
+                                    top: 12.0,
                                     right: 16,
                                   ),
                                   child: DatePickerField(
@@ -214,9 +229,19 @@ class _ApartmentdetailsState extends State<Apartmentdetails> {
                               ),
                             ],
                           ),
+                          Flexible(
+                            child: Padding(
+                                  padding: const EdgeInsets.only(left: 16.0, right: 16.0,bottom: 20,top: 12),
+                              child: DefaultTextField(
+                                maxline: 5,
+                                minline: 1,
+                               expands: true,
+                                label: 'وصف', hintText: 'اكتب الوصف', textController: descriptionController, type: TextInputType.text),
+                            ),
+                          ),
                           Padding(
                             padding:
-                                const EdgeInsets.only(left: 16.0, right: 16.0),
+                                const EdgeInsets.only(left: 16.0, right: 16.0,bottom: 16),
                             child: DefaultButton(
                                 colored: true,
                                 onClick: () async {

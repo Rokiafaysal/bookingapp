@@ -71,8 +71,8 @@ class _LoginscreenState extends State<Loginscreen> {
 
                     SizedBox(height: myheight * 0.02),
                     DefaultTextField(
-                      hintText: 'بريدك الالكتروني ',
-                      label: "ادخل البريد الالكتروني",
+                      hintText: ' اسم المستخدم ',
+                      label: "ادخل اسم المستخدم ",
                       icon: Icons.email,
                       textController: emailController,
                       type: TextInputType.emailAddress,
