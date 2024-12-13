@@ -15,4 +15,10 @@ class ReserveRepoImp implements ReserveRepository {
     // TODO: implement getReserve
     throw UnimplementedError();
   }
+
+  @override
+  Future<void> removeReserve({required int id}) async {
+    await MainFun.getReqMap(
+        ResponseModel.fromJson, "appartements/removereverse/$id");
+  }
 }

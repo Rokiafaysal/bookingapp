@@ -35,6 +35,7 @@ class UsersRepoImpl implements UserRepository {
       MyApp.token = responseBody['jwtToken'];
       MyApp.userType = responseBody['userType'];
       MyApp.userName = responseBody['username'];
+      MyApp.userId = responseBody['id'];
       return response.statusCode;
     } else {
       print(response.reasonPhrase);

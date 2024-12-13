@@ -37,18 +37,20 @@ class Detail {
   final String fromDate;
   final String toDate;
   final int appartementId;
+  final String note;
 
-  Detail({
-    required this.reverseId,
-    required this.fromDate,
-    required this.toDate,
-    required this.appartementId,
-  });
+  Detail(
+      {required this.reverseId,
+      required this.fromDate,
+      required this.toDate,
+      required this.appartementId,
+      required this.note});
 
   factory Detail.fromJson(Map<String, dynamic> json) {
     return Detail(
       reverseId: json['id'] as int,
       fromDate: json['fromdate'] as String,
+      note: json['notes'] as String,
       toDate: json['todate'] as String,
       appartementId: json['appartementid'] as int,
     );

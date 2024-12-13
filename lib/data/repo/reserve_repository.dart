@@ -4,4 +4,5 @@ import 'package:bookingapp/data/models/reserve_model.dart';
 abstract class ReserveRepository {
   Future<ResponseModel> createReseervation({required Reserve reserv});
   Future<Reserve> getReserve();
+  Future<void> removeReserve({required int id});
 }

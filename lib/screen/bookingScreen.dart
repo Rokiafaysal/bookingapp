@@ -2,7 +2,6 @@ import 'package:bookingapp/components/ColoreTheme.dart';
 import 'package:bookingapp/components/defaultTextField.dart';
 import 'package:bookingapp/components/defultButton.dart';
 import 'package:bookingapp/data/models/apparntment_send_model.dart';
-import 'package:bookingapp/data/models/appartment_model.dart';
 import 'package:bookingapp/domain/repo_impl/appartment_repo/appartment_repo_impl.dart';
 import 'package:bookingapp/screen/HomeScreen.dart';
 import 'package:flutter/material.dart';
@@ -74,6 +73,7 @@ class _BookingscreenState extends State<Bookingscreen> {
                           await appartmentRepoImpl.createAppartment(
                               app: appartementsendModel);
                           showDialog(
+                            // ignore: use_build_context_synchronously
                             context: context,
                             builder: (context) {
                               return AlertDialog(

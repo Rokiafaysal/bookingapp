@@ -1,6 +1,5 @@
 import 'package:bookingapp/components/Card.dart';
 import 'package:bookingapp/components/ColoreTheme.dart';
-import 'package:bookingapp/data/data_source/remote/remote_data.dart';
 import 'package:bookingapp/data/models/appartment_model.dart';
 import 'package:bookingapp/data/models/single_appartment_model.dart';
 import 'package:bookingapp/domain/repo_impl/appartment_repo/appartment_repo_impl.dart';
@@ -18,7 +17,6 @@ class HomeContent extends StatefulWidget {
 class _HomeContentState extends State<HomeContent> {
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     getAppart();
   }
@@ -31,7 +29,7 @@ class _HomeContentState extends State<HomeContent> {
 
   @override
   Widget build(BuildContext context) {
-    double mywidth = MediaQuery.of(context).size.width;
+    // double mywidth = MediaQuery.of(context).size.width;
     double myheight = MediaQuery.of(context).size.height;
 
     return Padding(

@@ -1,4 +1,3 @@
-import 'package:bookingapp/screen/loginScreen.dart';
 import 'package:bookingapp/screen/splashScreen.dart';
 import 'package:flutter/material.dart';
 
@@ -11,6 +10,7 @@ class MyApp extends StatelessWidget {
   static String baseurl = 'http://gaber.alfaysalerp.com/';
   static String token = '';
   static String userName = '';
+  static String userId = '';
   static int userType = 0;
   // This widget is the root of your application.
   @override

@@ -1,12 +1,9 @@
-import 'dart:ffi';
-
 import 'package:bookingapp/components/ColoreTheme.dart';
 import 'package:bookingapp/components/calender/calenderGrid.dart';
 import 'package:bookingapp/components/calender/calenderheader.dart';
 import 'package:bookingapp/components/datapicker.dart';
 import 'package:bookingapp/components/defaultTextField.dart';
 import 'package:bookingapp/components/defultButton.dart';
-import 'package:bookingapp/data/models/appartment_model.dart';
 import 'package:bookingapp/data/models/reserve_model.dart';
 import 'package:bookingapp/data/models/single_appartment_model.dart';
 import 'package:bookingapp/domain/repo_impl/reserve_repo/reserve_repo_imp.dart';
@@ -30,7 +27,7 @@ class _ApartmentdetailsState extends State<Apartmentdetails> {
   List<int> highlightedDates = [];
   var fromController = TextEditingController();
   var ToController = TextEditingController();
-  var descriptionController=TextEditingController();
+  var descriptionController = TextEditingController();
   int year = DateTime.now().year;
   int month = DateTime.now().month;
   List<int> getDifferenceDays(DateTime startDate, DateTime endDate) {
@@ -46,7 +43,8 @@ class _ApartmentdetailsState extends State<Apartmentdetails> {
         currentDate.isAtSameMomentAs(endDate)) {
       daysDifference
           .add(currentDate.day); // Add the day number of the currentDate
-      currentDate = currentDate.add(Duration(days: 1)); // Move to the next day
+      currentDate =
+          currentDate.add(const Duration(days: 1)); // Move to the next day
     }
 
     return daysDifference;
@@ -98,7 +96,7 @@ class _ApartmentdetailsState extends State<Apartmentdetails> {
         backgroundColor: Colors.white,
         title: Text(
           widget.appartementModel.name,
-          style: TextStyle(
+          style: const TextStyle(
             fontFamily: 'Tajawal',
             fontWeight: FontWeight.normal,
             fontSize: 18,
@@ -122,7 +120,7 @@ class _ApartmentdetailsState extends State<Apartmentdetails> {
                 children: [
                   Text(
                     'المواعيد المحجوزة و المتاحه',
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontFamily: 'Tajawal',
                       fontWeight: FontWeight.bold,
                       fontSize: 16,
@@ -154,18 +152,30 @@ class _ApartmentdetailsState extends State<Apartmentdetails> {
                   onMonthChange: _updateMonth,
                 ),
               ),
-              MyApp.userType ==1 ? Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  DefaultButton(
-
-                    colored: true, onClick: (){
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => Admindetailsscreen(),));
-                    }, text: 'تفاصيل ',width: 106,height: 38,),
-                ],
-              ) : SizedBox(),
+              MyApp.userType == 1
+                  ? Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        DefaultButton(
+                          colored: true,
+                          onClick: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => Admindetailsscreen(
+                                    appartementModel: widget.appartementModel,
+                                  ),
+                                ));
+                          },
+                          text: 'تفاصيل ',
+                          width: 106,
+                          height: 38,
+                        ),
+                      ],
+                    )
+                  : const SizedBox(),
               Padding(
-                padding: EdgeInsets.only(bottom: 16.0,top: 16),
+                padding: const EdgeInsets.only(bottom: 16.0, top: 16),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
@@ -186,7 +196,6 @@ class _ApartmentdetailsState extends State<Apartmentdetails> {
               MyApp.userType == 1
                   ? Container(
                       width: mywidth * (361 / 393),
-                   
                       decoration: BoxDecoration(
                         border: Border.all(color: AppColors.gray1),
                         borderRadius: BorderRadius.circular(12),
@@ -195,9 +204,6 @@ class _ApartmentdetailsState extends State<Apartmentdetails> {
                         mainAxisSize: MainAxisSize.min,
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-
-
-                          
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
@@ -231,17 +237,21 @@ class _ApartmentdetailsState extends State<Apartmentdetails> {
                           ),
                           Flexible(
                             child: Padding(
-                                  padding: const EdgeInsets.only(left: 16.0, right: 16.0,bottom: 20,top: 12),
+                              padding: const EdgeInsets.only(
+                                  left: 16.0, right: 16.0, bottom: 20, top: 12),
                               child: DefaultTextField(
-                                maxline: 5,
-                                minline: 1,
-                               expands: true,
-                                label: 'وصف', hintText: 'اكتب الوصف', textController: descriptionController, type: TextInputType.text),
+                                  maxline: 5,
+                                  minline: 1,
+                                  expands: true,
+                                  label: 'وصف',
+                                  hintText: 'اكتب الوصف',
+                                  textController: descriptionController,
+                                  type: TextInputType.text),
                             ),
                           ),
                           Padding(
-                            padding:
-                                const EdgeInsets.only(left: 16.0, right: 16.0,bottom: 16),
+                            padding: const EdgeInsets.only(
+                                left: 16.0, right: 16.0, bottom: 16),
                             child: DefaultButton(
                                 colored: true,
                                 onClick: () async {
@@ -250,10 +260,11 @@ class _ApartmentdetailsState extends State<Apartmentdetails> {
                                     ReserveRepoImp reserveRepoImp =
                                         ReserveRepoImp();
                                     Reserve _res = Reserve(
-                                      appartementId: widget.appartementModel.id,
-                                      fromDate: fromController.text,
-                                      toDate: ToController.text,
-                                    );
+                                        appartementId:
+                                            widget.appartementModel.id,
+                                        fromDate: fromController.text,
+                                        toDate: ToController.text,
+                                        notes: descriptionController.text);
                                     var res = await reserveRepoImp
                                         .createReseervation(reserv: _res);
                                     if (res.message == 1) {
@@ -261,9 +272,9 @@ class _ApartmentdetailsState extends State<Apartmentdetails> {
                                           .showSnackBar(
                                         SnackBar(
                                           content: Text(res.extramessage),
-                                          duration: Duration(seconds: 3),
+                                          duration: const Duration(seconds: 3),
                                           action: SnackBarAction(
-                                            label: '',
+                                            label: res.extramessage,
                                             onPressed: () {
                                               // Code to undo the change
                                               print('Undo action performed!');
@@ -327,7 +338,7 @@ class _ApartmentdetailsState extends State<Apartmentdetails> {
                                                                 MaterialPageRoute(
                                                                   builder:
                                                                       (context) =>
-                                                                          HomePage(),
+                                                                          const HomePage(),
                                                                 ));
                                                           },
                                                           text: 'Back to home',
@@ -354,8 +365,9 @@ class _ApartmentdetailsState extends State<Apartmentdetails> {
                                   } else {
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       SnackBar(
-                                        content: Text("برجاء اختيار تاريخ"),
-                                        duration: Duration(seconds: 3),
+                                        content:
+                                            const Text("برجاء اختيار تاريخ"),
+                                        duration: const Duration(seconds: 3),
                                         action: SnackBarAction(
                                           label: '',
                                           onPressed: () {
@@ -372,7 +384,7 @@ class _ApartmentdetailsState extends State<Apartmentdetails> {
                         ],
                       ),
                     )
-                  : SizedBox(),
+                  : const SizedBox(),
             ],
           ),
         ),
