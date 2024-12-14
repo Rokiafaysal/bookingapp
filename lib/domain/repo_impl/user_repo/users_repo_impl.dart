@@ -10,7 +10,7 @@ import 'package:http/http.dart' as http;
 class UsersRepoImpl implements UserRepository {
   @override
   Future<User> editUser({required int id, required String password}) {
-    return MainFun.postReq(User.fromJson, "users/update",
+    return MainFun.postReq(User.fromJson, "Gusers/update",
         EditUser(id: id, myPassword: password).toJson());
   }
 

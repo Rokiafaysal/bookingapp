@@ -109,16 +109,6 @@ class _LoginscreenState extends State<Loginscreen> {
                     ),
 
                     SizedBox(height: myheight * 0.02),
-                    TextButton(
-                      onPressed: () {},
-                      child: Text(
-                        "هل نسيت كلمة المرور؟",
-                        style: TextStyle(
-                          color: AppColors.gray7,
-                          fontSize: mywidth * 0.04,
-                        ),
-                      ),
-                    ),
                   ],
                 ),
               ),
