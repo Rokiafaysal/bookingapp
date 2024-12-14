@@ -24,25 +24,24 @@ class Apartmentdetails extends StatefulWidget {
 }
 
 class _ApartmentdetailsState extends State<Apartmentdetails> {
-  List<int> highlightedDates = [];
+  List<DateTime> highlightedDates = [];
   var fromController = TextEditingController();
   var ToController = TextEditingController();
   var descriptionController = TextEditingController();
   int year = DateTime.now().year;
   int month = DateTime.now().month;
-  List<int> getDifferenceDays(DateTime startDate, DateTime endDate) {
+  List<DateTime> getDifferenceDays(DateTime startDate, DateTime endDate) {
     // Ensure the startDate is before or the same as endDate
     if (startDate.isAfter(endDate)) {
       throw ArgumentError("startDate must be before or equal to endDate");
     }
 
-    List<int> daysDifference = [];
+    List<DateTime> daysDifference = [];
     DateTime currentDate = startDate;
 
     while (currentDate.isBefore(endDate) ||
         currentDate.isAtSameMomentAs(endDate)) {
-      daysDifference
-          .add(currentDate.day); // Add the day number of the currentDate
+      daysDifference.add(currentDate); // Add the day number of the currentDate
       currentDate =
           currentDate.add(const Duration(days: 1)); // Move to the next day
     }

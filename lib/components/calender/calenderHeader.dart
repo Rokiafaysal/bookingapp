@@ -20,19 +20,11 @@ class CalendarHeader extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          IconButton(
-            icon: Icon(Icons.arrow_back),
-            onPressed: onPrevious,
-          ),
           Text(
             "$monthName $year",
             style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-          ),
-          IconButton(
-            icon: Icon(Icons.arrow_forward),
-            onPressed: onNext,
           ),
         ],
       ),
@@ -41,8 +33,18 @@ class CalendarHeader extends StatelessWidget {
 
   String _getMonthName(int month) {
     List<String> months = [
-      "January", "February", "March", "April", "May", "June",
-      "July", "August", "September", "October", "November", "December"
+      "January",
+      "February",
+      "March",
+      "April",
+      "May",
+      "June",
+      "July",
+      "August",
+      "September",
+      "October",
+      "November",
+      "December"
     ];
     return months[month - 1];
   }

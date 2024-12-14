@@ -50,7 +50,7 @@ class Detail {
     return Detail(
       reverseId: json['id'] as int,
       fromDate: json['fromdate'] as String,
-      note: json['notes'] as String,
+      note: json['notes'] ?? "",
       toDate: json['todate'] as String,
       appartementId: json['appartementid'] as int,
     );

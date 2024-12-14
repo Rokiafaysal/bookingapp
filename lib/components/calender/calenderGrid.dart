@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 class CalendarGrid extends StatelessWidget {
   final int year;
   final int month;
-  final List<int> highlightedDates;
+  final List<DateTime> highlightedDates;
   final Function(int newYear, int newMonth) onMonthChange;
 
   CalendarGrid({
@@ -17,40 +17,40 @@ class CalendarGrid extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return IntrinsicHeight(
-      
       child: PageView.builder(
-        
-        
-        controller: PageController(initialPage: year * 12 + month),
+        controller: PageController(initialPage: (year - 1) * 12 + (month - 1)),
         onPageChanged: (int page) {
-          int newYear = page ~/ 12;
-          int newMonth = page % 12;
-          onMonthChange(newYear, newMonth + 1);
+          int newYear = page ~/ 12 + 1;
+          int newMonth = page % 12 + 1;
+          onMonthChange(newYear, newMonth);
         },
         itemBuilder: (context, index) {
-          int currentYear = index ~/ 12;
-          
+          int currentYear = index ~/ 12 + 1;
           int currentMonth = index % 12 + 1;
-          List<DateTime> daysInMonth = _generateDaysInMonth(currentYear, currentMonth);
-      
+          List<CalendarCell> calendarCells =
+              _generateCalendarCells(currentYear, currentMonth);
+
           return GridView.builder(
-      
             padding: const EdgeInsets.all(8.0),
-            itemCount: daysInMonth.length,
-            
+            itemCount: calendarCells.length,
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              
               crossAxisCount: 7,
               childAspectRatio: 1.4,
             ),
             itemBuilder: (context, i) {
-              DateTime day = daysInMonth[i];
-              bool isHighlighted = highlightedDates.contains(day.day);
-      
-              return CalendarDay(
-                date: day,
-                isHighlighted: isHighlighted,
-              );
+              final cell = calendarCells[i];
+              bool isHighlighted = highlightedDates.any((d) =>
+                  d.year == cell.date.year &&
+                  d.month == cell.date.month &&
+                  d.day == cell.date.day);
+
+              return cell.isCurrentMonth
+                  ? CalendarDay(
+                      date: cell.date,
+                      isHighlighted: cell.isCurrentMonth && isHighlighted,
+                      //isInactive: !cell.isCurrentMonth,
+                    )
+                  : const SizedBox();
             },
           );
         },
@@ -58,28 +58,48 @@ class CalendarGrid extends StatelessWidget {
     );
   }
 
-  List<DateTime> _generateDaysInMonth(int year, int month) {
-    List<DateTime> days = [];
-    DateTime firstDay = DateTime(year, month, 1);
+  List<CalendarCell> _generateCalendarCells(int year, int month) {
+    List<CalendarCell> cells = [];
+    DateTime firstDayOfMonth = DateTime(year, month, 1);
     int daysInMonth = DateTime(year, month + 1, 0).day;
 
-    // Add leading days of the previous month for alignment
-    int leadingDays = firstDay.weekday % 7;
-    for (int i = 0; i < leadingDays; i++) {
-      days.add(firstDay.subtract(Duration(days: leadingDays - i)));
+    // Calculate leading empty slots for alignment
+    int leadingEmptySlots = firstDayOfMonth.weekday % 7;
+
+    // Add empty cells for the leading slots
+    for (int i = 0; i < leadingEmptySlots; i++) {
+      cells.add(CalendarCell(
+        date: firstDayOfMonth.subtract(Duration(days: leadingEmptySlots - i)),
+        isCurrentMonth: false,
+      ));
     }
 
-    // Add all days of the current month
-    for (int i = 0; i < daysInMonth; i++) {
-      days.add(DateTime(year, month, i + 1));
+    // Add cells for the current month
+    for (int i = 1; i <= daysInMonth; i++) {
+      cells.add(CalendarCell(
+        date: DateTime(year, month, i),
+        isCurrentMonth: true,
+      ));
     }
 
-    // Add trailing days of the next month for alignment
-    int trailingDays = 7 - (days.length % 7);
-    for (int i = 0; i < trailingDays; i++) {
-      days.add(DateTime(year, month, daysInMonth + i + 1));
+    // Calculate trailing empty slots for alignment
+    int trailingEmptySlots = (7 - cells.length % 7) % 7;
+
+    // Add empty cells for the trailing slots
+    for (int i = 0; i < trailingEmptySlots; i++) {
+      cells.add(CalendarCell(
+        date: DateTime(year, month, daysInMonth + i + 1),
+        isCurrentMonth: false,
+      ));
     }
 
-    return days;
+    return cells;
   }
+}
+
+class CalendarCell {
+  final DateTime date;
+  final bool isCurrentMonth;
+
+  CalendarCell({required this.date, required this.isCurrentMonth});
 }
